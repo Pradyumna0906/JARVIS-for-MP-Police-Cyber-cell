@@ -70,13 +70,13 @@ const NeuralLines = ({ positions }) => {
 function App() {
   const [blobConfig, setBlobConfig] = useState({ colorPreset: 'Default', shape: 'Auto', scaleMult: 1.0, sensitivity: 1.0, dragEnabled: false });
 
-  // Locked Tactical Grid Layout (Perfectly Aligned Columns)
+  // Classic Airy Layout (based on user screenshot)
   const [positions, setPositions] = useState({
-    terminal: { x: 40, y: 100 },
-    map: { x: 40, y: 530 }, 
-    hud: { x: Math.max(window.innerWidth - 340, 450), y: 100 },
-    status: { x: Math.max(window.innerWidth - 340, 450), y: 230 },
-    tactical: { x: Math.max(window.innerWidth - 340, 450), y: 470 },
+    terminal: { x: 30, y: 250 },
+    map: { x: 30, y: Math.max(window.innerHeight - 250, 600) },
+    hud: { x: Math.max(window.innerWidth - 340, 450), y: 120 },
+    status: { x: Math.max(window.innerWidth - 340, 450), y: 320 },
+    tactical: { x: Math.max(window.innerWidth - 340, 450), y: Math.max(window.innerHeight - 200, 550) },
   });
 
   const [zIndices, setZIndices] = useState({ hud: 100, status: 100, terminal: 100, map: 100, tactical: 100, blob: 0 });
@@ -91,7 +91,7 @@ function App() {
 
   useEffect(() => {
     try { 
-      let stored = localStorage.getItem('cyber-sahiyogi-v2-layout');
+      let stored = localStorage.getItem('cyber-sahiyogi-v3-layout');
       if (stored) setPositions(prev => ({ ...prev, ...JSON.parse(stored) })); 
     } catch (e) {}
   }, []);
@@ -105,7 +105,7 @@ function App() {
   };
 
   useEffect(() => {
-    try { localStorage.setItem('cyber-sahiyogi-v2-layout', JSON.stringify(positions)); } catch (e) {}
+    try { localStorage.setItem('cyber-sahiyogi-v3-layout', JSON.stringify(positions)); } catch (e) {}
   }, [positions]);
 
   const [chatHistory, setChatHistory] = useState([]);

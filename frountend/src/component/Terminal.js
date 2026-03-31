@@ -33,7 +33,7 @@ const Terminal = ({ chatHistory, interimText, isListening, streamingText, isProc
       <div className="terminal-header drag-handle">
         <div className="status-indicator">
           <span className={`recording-dot ${isListening ? 'active' : ''}`}></span>
-          {isListening ? 'CYBER SAHIYOGI LISTENING...' : 'VOICE MODULE STANDBY'}
+          {isListening ? 'CORE LISTENING...' : 'VOICE STANDBY'}
         </div>
         <div className="terminal-decorations">
           <TransmissionSpectrum isTransmitting={isProcessing || isSpeaking} />

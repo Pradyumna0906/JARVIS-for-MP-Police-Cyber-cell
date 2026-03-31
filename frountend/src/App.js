@@ -10,9 +10,20 @@ import TacticalRotator from './component/TacticalRotator';
 import { UnifiedTacticalHUD } from './component/UnifiedDiagnostics';
 import { NeuralWaveform, ScanningHexGrid } from './component/FuturisticGauges';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL 
-  ? (process.env.REACT_APP_BACKEND_URL.startsWith('http') ? process.env.REACT_APP_BACKEND_URL : `https://${process.env.REACT_APP_BACKEND_URL}`)
-  : (window.location.hostname === 'localhost' ? 'http://localhost:5001' : '');
+let BACKEND = process.env.REACT_APP_BACKEND_URL;
+if (!BACKEND) {
+  if (window.location.hostname === 'localhost') {
+    BACKEND = 'http://localhost:5001';
+  } else if (window.location.hostname.includes('onrender.com')) {
+    // Auto-discovery fallback: jarvis-frontend-xyz -> jarvis-backend-xyz
+    BACKEND = `https://${window.location.hostname.replace('frontend', 'backend')}`;
+  } else {
+    BACKEND = '';
+  }
+} else {
+  BACKEND = BACKEND.startsWith('http') ? BACKEND : `https://${BACKEND}`;
+}
+const BACKEND_URL = BACKEND;
 
 const DataStream = ({ position }) => {
   const [data, setData] = useState([]);
@@ -316,7 +327,7 @@ function App() {
         <div className="core-sync-readout">
           <div className={`readout-dot ${backendConnected ? 'pulse-green' : ''}`}></div>
           <span style={{ color: backendConnected ? '#11f811' : 'rgba(0,255,255,0.3)' }}>
-            {backendConnected ? 'NEURAL LINK ESTABLISHED' : 'CORE LINK OFFLINE'} {/* UPTIME */} {systemStats.uptime}s
+            {backendConnected ? 'NEURAL LINK ESTABLISHED' : `CORE OFFLINE [${BACKEND_URL}]`} {/* UPTIME */} {systemStats.uptime}s
           </span>
           <div className={`readout-dot ${backendConnected ? 'pulse-green' : ''}`}></div>
         </div>

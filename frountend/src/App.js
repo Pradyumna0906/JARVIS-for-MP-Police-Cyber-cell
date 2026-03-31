@@ -14,14 +14,16 @@ let BACKEND = process.env.REACT_APP_BACKEND_URL;
 if (!BACKEND) {
   if (window.location.hostname === 'localhost') {
     BACKEND = 'http://localhost:5001';
-  } else if (window.location.hostname.includes('onrender.com')) {
-    // Auto-discovery fallback: jarvis-frontend-xyz -> jarvis-backend-xyz
-    BACKEND = `https://${window.location.hostname.replace('frontend', 'backend')}`;
   } else {
     BACKEND = '';
   }
 } else {
   BACKEND = BACKEND.startsWith('http') ? BACKEND : `https://${BACKEND}`;
+}
+
+// 🛡️ UNBREAKABLE PRODUCTION OVERRIDE:
+if (window.location.hostname.includes('onrender.com')) {
+  BACKEND = 'https://jarvis-backend-d5gf.onrender.com';
 }
 const BACKEND_URL = BACKEND;
 

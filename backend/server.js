@@ -71,20 +71,10 @@ const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const PORT = process.env.PORT || 5001; 
 
 // Enhanced CORS for production
-const allowedOrigins = [
-  'http://localhost:3000', 
-  'http://127.0.0.1:3000',
-  /\.onrender\.com$/ // Allow all Render subdomains securely
-];
+const allowedOrigins = '*'; // Allow ALL incoming connections (Bulletproof fallback)
 
 app.use(cors({ 
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.some(o => typeof o === 'string' ? o === origin : o.test(origin))) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: '*', // Unrestricted access for Render
   credentials: true 
 }));
 app.use(express.json());
@@ -570,4 +560,4 @@ Sir, sabhi AI models offline hain (rate limit) aur MHA manual mein direct exact 
   socket.on('disconnect', () => { intervals.forEach(clearInterval); });
 });
 
-server.listen(PORT, () => console.log(`[JARVIS] V7.1.1 STABLE Online on ${PORT}`));
+server.listen(PORT, '0.0.0.0', () => console.log(`[JARVIS] V7.1.1 STABLE Online on ${PORT} (0.0.0.0)`));

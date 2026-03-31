@@ -10,7 +10,9 @@ import TacticalRotator from './component/TacticalRotator';
 import { UnifiedTacticalHUD } from './component/UnifiedDiagnostics';
 import { NeuralWaveform, ScanningHexGrid } from './component/FuturisticGauges';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5001' : '');
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL 
+  ? (process.env.REACT_APP_BACKEND_URL.startsWith('http') ? process.env.REACT_APP_BACKEND_URL : `https://${process.env.REACT_APP_BACKEND_URL}`)
+  : (window.location.hostname === 'localhost' ? 'http://localhost:5001' : '');
 
 const DataStream = ({ position }) => {
   const [data, setData] = useState([]);
@@ -56,11 +58,11 @@ function App() {
   const [blobConfig, setBlobConfig] = useState({ colorPreset: 'Default', shape: 'Auto', scaleMult: 1.0, sensitivity: 1.0, dragEnabled: false });
 
   const [positions, setPositions] = useState({
-    hud: { x: window.innerWidth - 325, y: 100 },
-    status: { x: window.innerWidth - 325, y: 220 },
     terminal: { x: 30, y: 110 },
-    map: { x: 30, y: window.innerHeight - 200 },
-    tactical: { x: window.innerWidth - 325, y: window.innerHeight - 270 },
+    map: { x: 30, y: Math.max(window.innerHeight - 300, 500) },
+    hud: { x: Math.max(window.innerWidth - 325, 450), y: 110 },
+    status: { x: Math.max(window.innerWidth - 325, 450), y: 350 },
+    tactical: { x: Math.max(window.innerWidth - 325, 450), y: Math.max(window.innerHeight - 270, 500) },
   });
 
   const [zIndices, setZIndices] = useState({ hud: 100, status: 100, terminal: 100, map: 100, tactical: 100, blob: 0 });

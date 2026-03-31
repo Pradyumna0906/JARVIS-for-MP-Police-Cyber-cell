@@ -82,6 +82,13 @@ function App() {
 
   const [zIndices, setZIndices] = useState({ hud: 100, status: 100, terminal: 100, map: 100, tactical: 100, blob: 0 });
 
+  // React 19 strict node refs for Draggable
+  const hudRef = useRef(null);
+  const statusRef = useRef(null);
+  const mapRef = useRef(null);
+  const terminalRef = useRef(null);
+  const tacticalRef = useRef(null);
+
   const [systemStats, setSystemStats] = useState({ 
     cpu: 5, ram: 0, uptime: 0, processes: [], memDetail: { total: 0, used: 0, free: 0 },
     awareness: { location: 'GLOBAL CORE', battery: { level: 100, status: 'AC' }, wifi: { ssid: 'ACTIVE LINK', signal: 0 }, bluetooth: 'OFF' }
@@ -312,32 +319,32 @@ function App() {
       <div className="advanced-hud-wrapper">
         <Nabbar blobConfig={blobConfig} setBlobConfig={setBlobConfig} />
 
-        <Draggable handle=".drag-handle" position={positions.hud} onStart={() => bringToFront('hud')} onStop={(e, data) => handleDragStop('hud', e, data)}>
-          <div className="hud-component-fixed" style={{ zIndex: zIndices.hud, position: 'absolute', left: 0, top: 0 }}>
+        <Draggable nodeRef={hudRef} handle=".drag-handle" position={positions.hud} onStart={() => bringToFront('hud')} onStop={(e, data) => handleDragStop('hud', e, data)}>
+          <div ref={hudRef} className="hud-component-fixed" style={{ zIndex: zIndices.hud, position: 'absolute', left: 0, top: 0 }}>
             <ClockWeatherHUD isListening={isListening} isProcessing={isProcessing} />
           </div>
         </Draggable>
 
-        <Draggable handle=".drag-handle" position={positions.status} onStart={() => bringToFront('status')} onStop={(e, data) => handleDragStop('status', e, data)}>
-          <div className="hud-component-fixed" style={{ zIndex: zIndices.status, position: 'absolute', left: 0, top: 0 }}>
+        <Draggable nodeRef={statusRef} handle=".drag-handle" position={positions.status} onStart={() => bringToFront('status')} onStop={(e, data) => handleDragStop('status', e, data)}>
+          <div ref={statusRef} className="hud-component-fixed" style={{ zIndex: zIndices.status, position: 'absolute', left: 0, top: 0 }}>
             <Status isListening={isListening} backendConnected={backendConnected} isProcessing={isProcessing} isSpeaking={isSpeaking} systemStats={systemStats} aiLatency={aiLatency} />
           </div>
         </Draggable>
 
-        <Draggable handle=".drag-handle" position={positions.map} onStart={() => bringToFront('map')} onStop={(e, data) => handleDragStop('map', e, data)}>
-          <div className="hud-component-fixed" style={{ zIndex: zIndices.map, position: 'absolute', left: 0, top: 0 }}>
+        <Draggable nodeRef={mapRef} handle=".drag-handle" position={positions.map} onStart={() => bringToFront('map')} onStop={(e, data) => handleDragStop('map', e, data)}>
+          <div ref={mapRef} className="hud-component-fixed" style={{ zIndex: zIndices.map, position: 'absolute', left: 0, top: 0 }}>
             <TacticalMapHUD />
           </div>
         </Draggable>
 
-        <Draggable handle=".drag-handle" position={positions.terminal} onStart={() => bringToFront('terminal')} onStop={(e, data) => handleDragStop('terminal', e, data)}>
-          <div className="hud-component-fixed" style={{ zIndex: zIndices.terminal, position: 'absolute', left: 0, top: 0 }}>
+        <Draggable nodeRef={terminalRef} handle=".drag-handle" position={positions.terminal} onStart={() => bringToFront('terminal')} onStop={(e, data) => handleDragStop('terminal', e, data)}>
+          <div ref={terminalRef} className="hud-component-fixed" style={{ zIndex: zIndices.terminal, position: 'absolute', left: 0, top: 0 }}>
             <Terminal chatHistory={chatHistory} interimText={interimText} isListening={isListening} streamingText={streamingText} isProcessing={isProcessing} isSpeaking={isSpeaking} onSendMessage={sendMessage} />
           </div>
         </Draggable>
 
-        <Draggable handle=".drag-handle" position={positions.tactical} onStart={() => bringToFront('tactical')} onStop={(e, data) => handleDragStop('tactical', e, data)}>
-          <div className="hud-component-fixed" style={{ zIndex: zIndices.tactical, position: 'absolute', left: 0, top: 0 }}>
+        <Draggable nodeRef={tacticalRef} handle=".drag-handle" position={positions.tactical} onStart={() => bringToFront('tactical')} onStop={(e, data) => handleDragStop('tactical', e, data)}>
+          <div ref={tacticalRef} className="hud-component-fixed" style={{ zIndex: zIndices.tactical, position: 'absolute', left: 0, top: 0 }}>
             <UnifiedTacticalHUD stats={systemStats} latency={aiLatency} />
           </div>
         </Draggable>

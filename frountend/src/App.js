@@ -70,12 +70,13 @@ const NeuralLines = ({ positions }) => {
 function App() {
   const [blobConfig, setBlobConfig] = useState({ colorPreset: 'Default', shape: 'Auto', scaleMult: 1.0, sensitivity: 1.0, dragEnabled: false });
 
+  // Locked Tactical Grid Layout (Perfectly Aligned Columns)
   const [positions, setPositions] = useState({
-    terminal: { x: 30, y: 110 },
-    map: { x: 30, y: Math.max(window.innerHeight - 300, 500) },
-    hud: { x: Math.max(window.innerWidth - 325, 450), y: 110 },
-    status: { x: Math.max(window.innerWidth - 325, 450), y: 350 },
-    tactical: { x: Math.max(window.innerWidth - 325, 450), y: Math.max(window.innerHeight - 270, 500) },
+    terminal: { x: 40, y: 100 },
+    map: { x: 40, y: 530 }, 
+    hud: { x: Math.max(window.innerWidth - 340, 450), y: 100 },
+    status: { x: Math.max(window.innerWidth - 340, 450), y: 230 },
+    tactical: { x: Math.max(window.innerWidth - 340, 450), y: 470 },
   });
 
   const [zIndices, setZIndices] = useState({ hud: 100, status: 100, terminal: 100, map: 100, tactical: 100, blob: 0 });
@@ -90,22 +91,22 @@ function App() {
 
   useEffect(() => {
     try { 
-      let stored = localStorage.getItem('cyber-sahiyogi-layout');
-      if (!stored) {
-        // Fallback to old key for migration
-        const oldStored = localStorage.getItem('jarvis-layout');
-        if (oldStored) {
-          stored = oldStored;
-          localStorage.setItem('cyber-sahiyogi-layout', oldStored);
-        }
-      }
+      let stored = localStorage.getItem('cyber-sahiyogi-v2-layout');
       if (stored) setPositions(prev => ({ ...prev, ...JSON.parse(stored) })); 
     } catch (e) {}
   }, []);
 
-  const bringToFront = (key) => {
-    setZIndices(prev => { const maxZ = Math.max(...Object.values(prev)) + 1; return { ...prev, [key]: maxZ }; });
+  const bringToFront = (comp) => {
+    setZIndices(prev => {
+      const keys = Object.keys(prev);
+      const maxZ = Math.max(...keys.map(k => prev[k]));
+      return { ...prev, [comp]: maxZ + 1 };
+    });
   };
+
+  useEffect(() => {
+    try { localStorage.setItem('cyber-sahiyogi-v2-layout', JSON.stringify(positions)); } catch (e) {}
+  }, [positions]);
 
   const [chatHistory, setChatHistory] = useState([]);
   const [interimText, setInterimText] = useState('');

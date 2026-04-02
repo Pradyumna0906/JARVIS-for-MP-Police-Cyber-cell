@@ -1,7 +1,7 @@
 services:
-  # JARVIS Backend (Node.js API)
+  # Cyber Sahiyogi Backend (Node.js API)
   - type: web
-    name: jarvis-backend
+    name: cyber-sahiyogi-backend
     env: node
     plan: free
     rootDir: backend
@@ -15,9 +15,9 @@ services:
       - key: PORT
         value: 5001
 
-  # JARVIS Frontend (React Static site)
+  # Cyber Sahiyogi Frontend (React Static site)
   - type: web
-    name: jarvis-frontend
+    name: cyber-sahiyogi-frontend
     env: static
     rootDir: frountend
     buildCommand: npm install && npm run build
@@ -26,5 +26,5 @@ services:
       - key: REACT_APP_BACKEND_URL
         fromService:
           type: web
-          name: jarvis-backend
+          name: cyber-sahiyogi-backend
           property: host
